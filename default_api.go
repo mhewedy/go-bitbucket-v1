@@ -10,6 +10,7 @@ import (
 	"io"
 	"io/ioutil"
 	"net/url"
+	"os"
 	"strings"
 
 	"github.com/mitchellh/mapstructure"
@@ -2287,14 +2288,22 @@ func (a *DefaultApiService) EditFile(projectKey, repositorySlug, path string, re
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := url.Values{}
 
-	content, err := ioutil.ReadAll(reader)
+	file, err := ioutil.TempFile("go-bitbucket-v1", "edit_file")
 	if err != nil {
+		return nil, err
+	}
+	defer os.Remove(file.Name())
+
+	if _, err = io.Copy(file, reader); err != nil {
+		return nil, err
+	}
+	if err := file.Close(); err != nil {
 		return nil, err
 	}
 
 	localVarFormParams := url.Values{
 		"branch":         []string{branch},
-		"content":        []string{string(content)},
+		"@content":       []string{file.Name()},
 		"message":        []string{message},
 		"sourceCommitId": []string{sourceCommitId},
 	}
