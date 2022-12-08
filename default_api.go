@@ -666,12 +666,15 @@ func (a *DefaultApiService) CreatePullRequest(projectKey, repositorySlug string,
 Creates a branch using the information provided in the {@link RestCreateBranchRequest request}  &lt;p&gt;  The authenticated user must have &lt;strong&gt;REPO_WRITE&lt;/strong&gt; permission for the context repository to call  this resource.
 
 @return */
-func (a *DefaultApiService) CreateBranch(projectKey, repositorySlug, branchName string) (*APIResponse, error) {
+func (a *DefaultApiService) CreateBranch(projectKey, repositorySlug, branchName, startPoint string) (*APIResponse, error) {
 	var (
 		localVarHTTPMethod = strings.ToUpper("Post")
-		localVarPostBody   = map[string]string{"name": branchName}
-		localVarFileName   string
-		localVarFileBytes  []byte
+		localVarPostBody   = map[string]string{
+			"name":       branchName,
+			"startPoint": startPoint,
+		}
+		localVarFileName  string
+		localVarFileBytes []byte
 	)
 
 	// create path and map variables
