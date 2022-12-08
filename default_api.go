@@ -2289,7 +2289,7 @@ func (a *DefaultApiService) EditFile(projectKey, repositorySlug, path string, re
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := url.Values{}
 
-	file, err := ioutil.TempFile("go-bitbucket-v1", "edit_file")
+	file, err := ioutil.TempFile("", "go-bitbucket-v1_edit_file")
 	if err != nil {
 		return nil, err
 	}
