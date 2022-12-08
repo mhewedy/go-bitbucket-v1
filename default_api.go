@@ -11,6 +11,7 @@ import (
 	"io/ioutil"
 	"net/url"
 	"os"
+	"path/filepath"
 	"strings"
 
 	"github.com/mitchellh/mapstructure"
@@ -2301,9 +2302,14 @@ func (a *DefaultApiService) EditFile(projectKey, repositorySlug, path string, re
 		return nil, err
 	}
 
+	contentFilePath, err := filepath.Abs(filepath.Dir(file.Name()))
+	if err != nil {
+		return nil, err
+	}
+
 	localVarFormParams := url.Values{
 		"branch":         []string{branch},
-		"@content":       []string{file.Name()},
+		"@content":       []string{contentFilePath},
 		"message":        []string{message},
 		"sourceCommitId": []string{sourceCommitId},
 	}
