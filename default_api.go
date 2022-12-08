@@ -11,7 +11,6 @@ import (
 	"io/ioutil"
 	"net/url"
 	"os"
-	"path/filepath"
 	"strings"
 
 	"github.com/mitchellh/mapstructure"
