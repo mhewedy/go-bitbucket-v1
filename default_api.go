@@ -2302,14 +2302,13 @@ func (a *DefaultApiService) EditFile(projectKey, repositorySlug, path string, re
 		return nil, err
 	}
 
-	contentFilePath, err := filepath.Abs(filepath.Dir(file.Name()))
 	if err != nil {
 		return nil, err
 	}
 
 	localVarFormParams := url.Values{
 		"branch":         []string{branch},
-		"@content":       []string{contentFilePath},
+		"@content":       []string{file.Name()},
 		"message":        []string{message},
 		"sourceCommitId": []string{sourceCommitId},
 	}
