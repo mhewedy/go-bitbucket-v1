@@ -2270,7 +2270,7 @@ Update the content of &lt;code&gt;path&lt;/code&gt;, on the given &lt;code&gt;re
 
 @param path the file path to retrieve content from
 @return */
-func (a *DefaultApiService) EditFile(projectKey, repositorySlug, path string, reader io.Reader) (*APIResponse, error) {
+func (a *DefaultApiService) EditFile(projectKey, repositorySlug, path string, reader io.Reader, branch, sourceCommitId, message string) (*APIResponse, error) {
 	var (
 		localVarHTTPMethod = strings.ToUpper("Put")
 		localVarPostBody   interface{}
@@ -2286,7 +2286,18 @@ func (a *DefaultApiService) EditFile(projectKey, repositorySlug, path string, re
 
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := url.Values{}
-	localVarFormParams := url.Values{}
+
+	content, err := ioutil.ReadAll(reader)
+	if err != nil {
+		return nil, err
+	}
+
+	localVarFormParams := url.Values{
+		"branch":         []string{branch},
+		"content":        []string{string(content)},
+		"message":        []string{message},
+		"sourceCommitId": []string{sourceCommitId},
+	}
 
 	// to determine the Content-Type header
 	localVarHTTPContentTypes := []string{"application/json"}
